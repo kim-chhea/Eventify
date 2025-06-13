@@ -62,7 +62,7 @@ class UserController extends Controller
             "password" => "required|string|min:8|max:16",
             "gender" => "required",
             "birthdate" => "required",
-            "role_id" => "required",
+            "role_id" => "required|integer",
             "socialmedia_id" => "nullable"
           ]);
           $user = User::create($ValidatedUser);
@@ -135,7 +135,7 @@ class UserController extends Controller
                 "password" => "required|string|min:8|max:16",
                 "gender" => "required",
                 "birthdate" => "required",
-                "role_id" => "required",
+                "role_id" => "required|integer",
                 "socialmedia_id" => "nullable"
               ]);
               $user=User::findOrFail($id);

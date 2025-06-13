@@ -259,9 +259,8 @@ class EventController extends Controller
 {
     try {
         $user = User::with(['events' => function ($query) {
-            $query->with('location', 'category'); // optional: eager-load related data
-        }, 'socialmedia']) // include user's social media too
-        ->findOrFail($id);
+            $query->with('location', 'category');
+        }, 'socialmedia'])->findOrFail($id);
 
         return response()->json([
             'message' => 'User with events retrieved successfully.',

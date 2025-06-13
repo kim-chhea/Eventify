@@ -34,7 +34,7 @@ Route::prefix('/eventify')->group(function(){
 //Route for categories of events
 Route::prefix('/eventify')->group(function()
     {
-     Route::get('/categories',[CategoryController::class,'index'])->middleware('IsUser');//3;
+     Route::get('/categories',[CategoryController::class,'index'])->middleware('IsUser');
      Route::get('/categories/{id}',[CategoryController::class,'show'])->middleware('IsUser');
      Route::post('/categories',[CategoryController::class,'store'])->middleware('IsAdmin');
      Route::put('/categories/{id}',[CategoryController::class,'update'])->middleware('IsAdmin');
@@ -58,15 +58,15 @@ Route::prefix('/eventify')->group(function(){
         //
         Route::get('/user/event/{id}', [EventController::class, 'show_user_event'])->middleware('IsUser');
     
-        Route::post('/event', [EventController::class, 'store'])->middleware('IsOganizer');
+        Route::post('/event', [EventController::class, 'store'])->middleware('IsOgarnizer');
     
-        Route::put('/event/{id}', [EventController::class, 'update'])->middleware('IsOganizer');
+        Route::put('/event/{id}', [EventController::class, 'update'])->middleware('IsOgarnizer');
         // Route::put('/user/event/{id}', [EventController::class, 'update_user_event']); // fixed
     
-        Route::delete('/event/{id}', [EventController::class, 'destroy'])->middleware('IsOganizer');
+        Route::delete('/event/{id}', [EventController::class, 'destroy'])->middleware('IsOgarnizer');
         // Route::delete('/user/event/{id}', [EventController::class, 'destroy_event_user']);
 
-        Route::post('/user/{user_id}/event/{event_id}/register', [EventController::class, 'registerUserToEvent']);
+        Route::post('/user/{user_id}/event/{event_id}/register', [EventController::class, 'registerUserToEvent'])->middleware('IsUser');
         Route::get('/user/{id}/event/', [EventController::class, 'show_event_user']);
-        Route::delete('/user/{user_id}/event/{event_id}/unregister', [EventController::class, 'unregisterUserFromEvent']);
+        Route::delete('/user/{user_id}/event/{event_id}/unregister', [EventController::class, 'unregisterUserFromEvent'])->middleware('IsUser');
     });

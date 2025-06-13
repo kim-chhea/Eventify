@@ -76,7 +76,7 @@ class LocationController extends Controller
             
           }
           return response()->json([
-            "message" => "Failed to create categories of events Please try again.",
+            "message" => "Failed to create locations of events Please try again.",
             "status" => 400
         ]);
         

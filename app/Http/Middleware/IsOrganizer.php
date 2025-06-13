@@ -15,6 +15,12 @@ class IsOrganizer
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        $user = $request->user('sanctum');
+        if($user && $user->role_id === 3)
+        {
+            return $next($request);
+
+        }
+        return response()->json(['message' => 'Unauthorized - Organizer of the event only'], 403);
     }
 }

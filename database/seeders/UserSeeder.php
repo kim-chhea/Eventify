@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password123'),
                 'gender' => 'female',
                 'birthdate' => Carbon::now()->subYears(28),
-                'role_id' => 2,
+                'role_id' => 3,
                 'socialmedia_id' => 3,
             ],
             [
@@ -50,7 +50,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password123'),
                 'gender' => 'other',
                 'birthdate' => Carbon::now()->subYears(22),
-                'role_id' => 2,
+                'role_id' => 3,
                 'socialmedia_id' => 4,
             ],
             [
@@ -59,7 +59,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password123'),
                 'gender' => 'female',
                 'birthdate' => Carbon::now()->subYears(35),
-                'role_id' => 2,
+                'role_id' => 3,
                 'socialmedia_id' => 5,
             ],
             [

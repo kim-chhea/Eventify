@@ -15,6 +15,12 @@ class IsAttendee
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        $user = $request->user('sanctum');
+        if($user && $user->role_id === 2)
+        {
+            return $next($request);
+
+        }
+        return response()->json(['message' => 'Please login or register'], 401);
     }
 }

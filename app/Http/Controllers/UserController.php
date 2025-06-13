@@ -16,7 +16,7 @@ class UserController extends Controller
     {
         try
         {
-        $user = User::with(['socialmedia:id,platform,username'])->first([
+        $user = User::with(['socialMedia:id,platform,username'])->get([
                 'email', 'role_id', 'gender', 'birthdate', 'socialmedia_id'
             ]);
             

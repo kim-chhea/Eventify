@@ -24,7 +24,7 @@ Route::prefix('/auth')->group(function()
 
 //Route to get user info
 Route::prefix('/eventify')->group(function(){
-    Route::apiResource('/user',UserController::class);
+    Route::apiResource('/user',UserController::class)->middleware('IsAdmin');
 });
 
 //Route for social media
@@ -34,35 +34,36 @@ Route::prefix('/eventify')->group(function(){
 //Route for categories of events
 Route::prefix('/eventify')->group(function()
     {
-     Route::get('/categories',[CategoryController::class,'index']);
-     Route::get('/categories/{id}',[CategoryController::class,'show']);
-     Route::post('/categories',[CategoryController::class,'store']);
-     Route::put('/categories/{id}',[CategoryController::class,'update']);
-     Route::delete('/categories/{id}',[CategoryController::class,'destroy']);
+     Route::get('/categories',[CategoryController::class,'index'])->middleware('IsUser');//3;
+     Route::get('/categories/{id}',[CategoryController::class,'show'])->middleware('IsUser');
+     Route::post('/categories',[CategoryController::class,'store'])->middleware('IsAdmin');
+     Route::put('/categories/{id}',[CategoryController::class,'update'])->middleware('IsAdmin');
+     Route::delete('/categories/{id}',[CategoryController::class,'destroy'])->middleware('IsAdmin');
     });    
 
 //Route for locations of events
 Route::prefix('/eventify')->group(function()
     {
-     Route::get('/locations',[LocationController::class,'index']);
-     Route::get('/locations/{id}',[LocationController::class,'show']);
-     Route::post('/locations',[LocationController::class,'store']);
-     Route::put('/locations/{id}',[LocationController::class,'update']);
-     Route::delete('/locations/{id}',[LocationController::class,'destroy']);
+     Route::get('/locations',[LocationController::class,'index'])->middleware('IsOgarnizer');;
+     Route::get('/locations/{id}',[LocationController::class,'show'])->middleware('IsOgarnizer');
+     Route::post('/locations',[LocationController::class,'store'])->middleware('IsOgarnizer');
+     Route::put('/locations/{id}',[LocationController::class,'update'])->middleware('IsOgarnizer');;
+     Route::delete('/locations/{id}',[LocationController::class,'destroy'])->middleware('IsOgarnizer');;
     });   
  
 //route for user event
 Route::prefix('/eventify')->group(function(){
-        Route::get('/event', [EventController::class, 'index']);
-        Route::get('/event/{id}', [EventController::class, 'show']);
-        Route::get('/user/event/{id}', [EventController::class, 'show_user_event']);
+        Route::get('/event', [EventController::class, 'index'])->middleware('IsUser');
+        Route::get('/event/{id}', [EventController::class, 'show'])->middleware('IsUser');
+        //
+        Route::get('/user/event/{id}', [EventController::class, 'show_user_event'])->middleware('IsUser');
     
-        Route::post('/event', [EventController::class, 'store']);
+        Route::post('/event', [EventController::class, 'store'])->middleware('IsOganizer');
     
-        Route::put('/event/{id}', [EventController::class, 'update']);
+        Route::put('/event/{id}', [EventController::class, 'update'])->middleware('IsOganizer');
         // Route::put('/user/event/{id}', [EventController::class, 'update_user_event']); // fixed
     
-        Route::delete('/event/{id}', [EventController::class, 'destroy']);
+        Route::delete('/event/{id}', [EventController::class, 'destroy'])->middleware('IsOganizer');
         // Route::delete('/user/event/{id}', [EventController::class, 'destroy_event_user']);
 
         Route::post('/user/{user_id}/event/{event_id}/register', [EventController::class, 'registerUserToEvent']);

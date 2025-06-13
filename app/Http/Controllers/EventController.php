@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\CustomeExceptions;
 use App\Models\Event;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use PhpParser\Node\Expr\Throw_;
 
 class EventController extends Controller
 {
@@ -181,8 +183,96 @@ class EventController extends Controller
         }
     }
 
-    public function show_user_event()
+    public function show_user_event($id)
     {
+        try
+        {
+            $evevnts = Event::with(['user.socialMedia'])->findOrFail($id);
+            if($evevnts)
+            {
+            return response()->json([
+                "message" => "Events that user attented retrieved successfully.",
+                "status" => 200,
+                "data" => $evevnts
+            ]);
+            
+            }
+         return response()->json([
+            "message" => "No Events found with the provided ID.",
+            "status" => 404
+        ]);
         
+        }
+        catch(Exception $e)
+        {
+            throw new CustomeExceptions($e->getMessage(), 500);
+        }
     }
+
+    public function registerUserToEvent($user_id , $event_id)
+    {
+        try
+        {
+        $user = User::findOrFail($user_id);
+        $event = Event::findOrFail($event_id);
+        $user->events()->syncWithoutDetaching([
+            $event_id => ['status' => 'attending']
+        ]);
+        return response()->json([
+            'message' => "User registered to event successfully.",
+            'status' => 200,
+            'data' => [
+                'user' => $user,
+                'event' => $event
+            ]
+        ]);
+        }
+        catch (Exception $e) {
+         throw new CustomeExceptions($e->getMessage(), 500);
+    }
+
+    }
+    public function unregisterUserFromEvent($user_id , $event_id)
+    {
+        try 
+        {
+            $user = User::findOrFail($user_id);
+            $event = Event::findOrFail($event_id);
+    
+            // Detach the event from the user
+            $user->events()->detach($event_id);
+    
+            return response()->json([
+                'message' => 'User successfully unregistered from the event.',
+                'status' => 200
+            ]);
+        } 
+        catch (Exception $e) {
+            return response()->json([
+                'message' => 'Failed to unregister user from event: ' . $e->getMessage(),
+                'status' => 500
+            ]);
+        }
+    }
+
+    public function show_event_user($id)
+{
+    try {
+        $user = User::with(['events' => function ($query) {
+            $query->with('location', 'category'); // optional: eager-load related data
+        }, 'socialmedia']) // include user's social media too
+        ->findOrFail($id);
+
+        return response()->json([
+            'message' => 'User with events retrieved successfully.',
+            'status' => 200,
+            'data' => $user
+        ]);
+    } catch (Exception $e) {
+        return response()->json([
+            'message' => 'Something went wrong: ' . $e->getMessage(),
+            'status' => 500,
+        ]);
+    }
+}
 }

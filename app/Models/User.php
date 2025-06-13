@@ -30,7 +30,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
-    public function socialeMedia()
+    public function socialmedia()
     {
         return $this->belongsTo(SocialMedia::class);
     }

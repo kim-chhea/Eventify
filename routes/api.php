@@ -60,11 +60,12 @@ Route::prefix('/eventify')->group(function(){
         Route::post('/event', [EventController::class, 'store']);
     
         Route::put('/event/{id}', [EventController::class, 'update']);
-        Route::put('/user/event/{id}', [EventController::class, 'update_user_event']); // fixed
+        // Route::put('/user/event/{id}', [EventController::class, 'update_user_event']); // fixed
     
         Route::delete('/event/{id}', [EventController::class, 'destroy']);
-        Route::delete('/user/event/{id}', [EventController::class, 'destroy_event_user']);
+        // Route::delete('/user/event/{id}', [EventController::class, 'destroy_event_user']);
 
         Route::post('/user/{user_id}/event/{event_id}/register', [EventController::class, 'registerUserToEvent']);
+        Route::get('/user/{id}/event/', [EventController::class, 'show_event_user']);
         Route::delete('/user/{user_id}/event/{event_id}/unregister', [EventController::class, 'unregisterUserFromEvent']);
     });
